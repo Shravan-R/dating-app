@@ -1,0 +1,154 @@
+PROJECT ARCHITECTURE:
+Dating Web Application Architecture
+
+--------------------------------------------------
+
+ARCHITECTURE OVERVIEW:
+
+The application follows a classic Client–Server architecture.
+
+- Frontend acts as the client
+- Backend acts as the server
+- SQLite acts as the persistent storage layer
+
+All communication between frontend and backend is handled using REST APIs.
+
+--------------------------------------------------
+
+ARCHITECTURE TYPE:
+Three-Tier Architecture
+
+1. Presentation Layer (Frontend)
+2. Application Layer (Backend)
+3. Data Layer (Database)
+
+--------------------------------------------------
+
+1. PRESENTATION LAYER (FRONTEND):
+
+Technologies Used:
+- HTML
+- CSS
+- JavaScript
+
+Responsibilities:
+- Display user interfaces (Login, Register, Discover, Matches, Chat)
+- Capture user input
+- Send HTTP requests to backend APIs
+- Render responses received from backend
+- Handle basic session management using LocalStorage
+
+Key Files:
+- index.html
+- register.html
+- discover.html
+- matches.html
+- chat.html
+- auth.js
+- discover.js
+- matches.js
+- chat.js
+
+--------------------------------------------------
+
+2. APPLICATION LAYER (BACKEND):
+
+Technologies Used:
+- Node.js
+- Express.js
+
+Responsibilities:
+- Handle client requests
+- Authenticate users
+- Apply business logic
+- Control access to chat functionality
+- Communicate with the database
+- Send JSON responses to frontend
+
+API Endpoints:
+- POST /register
+- POST /login
+- GET /users/:id
+- POST /like
+- GET /matches/:userId
+- GET /isMatched/:user1/:user2
+- GET /messages/:user1/:user2
+- POST /message
+
+--------------------------------------------------
+
+3. DATA LAYER (DATABASE):
+
+Technology Used:
+- SQLite
+
+Responsibilities:
+- Store user data
+- Store likes and matches
+- Store chat messages
+- Ensure data persistence
+
+Database Characteristics:
+- Serverless
+- Lightweight
+- Relational
+- Stored as a local file
+
+--------------------------------------------------
+
+DATA FLOW:
+
+1. User performs action on frontend.
+2. Frontend sends HTTP request to backend.
+3. Backend validates request.
+4. Backend queries SQLite database.
+5. Database returns result to backend.
+6. Backend sends JSON response to frontend.
+7. Frontend updates UI accordingly.
+
+--------------------------------------------------
+
+MATCHING LOGIC ARCHITECTURE:
+
+- Likes are stored in the likes table.
+- When a user likes another user:
+  - Backend checks for reverse like.
+  - If reverse like exists:
+    - Match is created in matches table.
+
+--------------------------------------------------
+
+CHAT ACCESS CONTROL:
+
+- Chat page is always accessible.
+- Backend checks match status.
+- If matched:
+  - Message input enabled.
+- If not matched:
+  - Message input disabled.
+  - Informational message displayed.
+
+--------------------------------------------------
+
+ERROR HANDLING:
+
+- Backend returns proper HTTP status codes.
+- Frontend displays alerts or messages.
+- Invalid operations are prevented gracefully.
+
+--------------------------------------------------
+
+SCALABILITY CONSIDERATIONS:
+
+- Frontend and backend are decoupled.
+- Database layer can be replaced with MySQL/PostgreSQL.
+- REST APIs allow easy integration with mobile apps.
+- Architecture supports future real-time upgrades.
+
+--------------------------------------------------
+
+ARCHITECTURE SUMMARY:
+
+The system is modular, easy to understand, and follows industry-standard
+design principles. It ensures separation of concerns, maintainability,
+and extensibility.
