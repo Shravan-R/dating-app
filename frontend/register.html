@@ -1,33 +1,361 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Register</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register - Dating App</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            body {
+                background: linear-gradient(
+                    135deg,
+                    #1a1a2e 0%,
+                    #16213e 50%,
+                    #0f3460 100%
+                );
+                min-height: 100vh;
+            }
+            .form-control:focus,
+            .form-select:focus {
+                background: #2a2a3e !important;
+                border-color: #ff6b9d !important;
+                color: white !important;
+                box-shadow: 0 0 0 0.2rem rgba(255, 107, 157, 0.25) !important;
+            }
+            .form-control::placeholder {
+                color: #6c757d;
+            }
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            }
+            .btn-primary {
+                transition: all 0.3s ease;
+            }
+            .input-group {
+                position: relative;
+            }
+            .password-toggle {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #6c757d;
+                cursor: pointer;
+                z-index: 10;
+            }
+            .password-toggle:hover {
+                color: #ff6b9d;
+            }
+            .alert {
+                animation: slideDown 0.3s ease;
+            }
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .form-label {
+                font-weight: 500;
+            }
+        </style>
+    </head>
+    <body class="d-flex align-items-center justify-content-center py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div
+                        class="card shadow-lg border-0"
+                        style="
+                            background: #1e1e2e;
+                            border-radius: 20px;
+                            animation: fadeIn 0.5s;
+                        "
+                    >
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <i
+                                    class="fas fa-heart"
+                                    style="
+                                        font-size: 48px;
+                                        color: #ff6b9d;
+                                        margin-bottom: 15px;
+                                    "
+                                ></i>
+                                <h2 class="text-white mb-2 fw-bold">
+                                    Create Account
+                                </h2>
+                                <p class="text-muted mb-0">
+                                    Join us and find your perfect match
+                                </p>
+                            </div>
 
-  <h2>Create Account</h2>
+                            <div id="alertContainer"></div>
 
-  <input id="name" placeholder="Name">
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <input id="age" type="number" placeholder="Age">
-  
-  <select id="gender">
-    <option value="">Select Gender</option>
-    <option>Male</option>
-    <option>Female</option>
-    <option>Other</option>
-  </select>
+                            <form
+                                onsubmit="
+                                    event.preventDefault();
+                                    register();
+                                "
+                            >
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label text-white-50 small mb-2"
+                                    >
+                                        <i class="fas fa-user me-1"></i> Full
+                                        Name
+                                    </label>
+                                    <input
+                                        id="name"
+                                        type="text"
+                                        class="form-control form-control-lg"
+                                        placeholder="Enter your full name"
+                                        required
+                                        autocomplete="name"
+                                        style="
+                                            background: #2a2a3e;
+                                            border: 1px solid #3a3a4e;
+                                            color: white;
+                                            border-radius: 10px;
+                                            padding: 12px 15px;
+                                        "
+                                    />
+                                </div>
 
-  <button onclick="register()">Register</button>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label text-white-50 small mb-2"
+                                    >
+                                        <i class="fas fa-envelope me-1"></i>
+                                        Email
+                                    </label>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        class="form-control form-control-lg"
+                                        placeholder="Enter your email"
+                                        required
+                                        autocomplete="email"
+                                        style="
+                                            background: #2a2a3e;
+                                            border: 1px solid #3a3a4e;
+                                            color: white;
+                                            border-radius: 10px;
+                                            padding: 12px 15px;
+                                        "
+                                    />
+                                </div>
 
-  <p>
-    Already have an account?
-    <a href="index.html">Login</a>
-  </p>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label text-white-50 small mb-2"
+                                    >
+                                        <i class="fas fa-lock me-1"></i>
+                                        Password
+                                    </label>
+                                    <div class="input-group position-relative">
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            class="form-control form-control-lg"
+                                            placeholder="Minimum 6 characters"
+                                            required
+                                            autocomplete="new-password"
+                                            minlength="6"
+                                            style="
+                                                background: #2a2a3e;
+                                                border: 1px solid #3a3a4e;
+                                                color: white;
+                                                border-radius: 10px;
+                                                padding: 12px 45px 12px 15px;
+                                            "
+                                        />
+                                        <button
+                                            type="button"
+                                            class="password-toggle"
+                                            onclick="togglePassword('password')"
+                                            id="passwordToggle"
+                                        >
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i
+                                        >Password must be at least 6 characters
+                                    </small>
+                                </div>
 
-  <script src="js/auth.js"></script>
-</body>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label text-white-50 small mb-2"
+                                        >
+                                            <i
+                                                class="fas fa-birthday-cake me-1"
+                                            ></i>
+                                            Age
+                                        </label>
+                                        <input
+                                            id="age"
+                                            type="number"
+                                            class="form-control form-control-lg"
+                                            placeholder="Age"
+                                            min="18"
+                                            max="100"
+                                            required
+                                            style="
+                                                background: #2a2a3e;
+                                                border: 1px solid #3a3a4e;
+                                                color: white;
+                                                border-radius: 10px;
+                                                padding: 12px 15px;
+                                            "
+                                        />
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label text-white-50 small mb-2"
+                                        >
+                                            <i
+                                                class="fas fa-venus-mars me-1"
+                                            ></i>
+                                            Gender
+                                        </label>
+                                        <select
+                                            id="gender"
+                                            class="form-select form-select-lg"
+                                            required
+                                            style="
+                                                background: #2a2a3e;
+                                                border: 1px solid #3a3a4e;
+                                                color: white;
+                                                border-radius: 10px;
+                                                padding: 12px 15px;
+                                            "
+                                        >
+                                            <option
+                                                value=""
+                                                style="
+                                                    background: #2a2a3e;
+                                                    color: white;
+                                                "
+                                            >
+                                                Select Gender
+                                            </option>
+                                            <option
+                                                value="Male"
+                                                style="
+                                                    background: #2a2a3e;
+                                                    color: white;
+                                                "
+                                            >
+                                                Male
+                                            </option>
+                                            <option
+                                                value="Female"
+                                                style="
+                                                    background: #2a2a3e;
+                                                    color: white;
+                                                "
+                                            >
+                                                Female
+                                            </option>
+                                            <option
+                                                value="Other"
+                                                style="
+                                                    background: #2a2a3e;
+                                                    color: white;
+                                                "
+                                            >
+                                                Other
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    id="registerBtn"
+                                    class="btn btn-primary w-100 btn-lg fw-bold mt-3"
+                                    style="
+                                        background: linear-gradient(
+                                            135deg,
+                                            #ff6b9d 0%,
+                                            #c44569 100%
+                                        );
+                                        border: none;
+                                        border-radius: 10px;
+                                        padding: 12px;
+                                    "
+                                >
+                                    <span id="registerBtnText">
+                                        <i class="fas fa-user-plus me-2"></i
+                                        >Create Account
+                                    </span>
+                                    <span
+                                        id="registerBtnSpinner"
+                                        class="spinner-border spinner-border-sm d-none"
+                                        role="status"
+                                    ></span>
+                                </button>
+                            </form>
+
+                            <div class="text-center mt-4">
+                                <p class="text-muted mb-0">
+                                    Already have an account?
+                                </p>
+                                
+                                    <a
+                                        href="index.html"
+                                        class="text-decoration-none fw-bold"
+                                        style="color: #ff6b9d"
+                                    >
+                                        <i class="fas fa-sign-in-alt me-1"></i
+                                        >Login
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/header.js"></script>
+        <script src="js/auth.js"></script>
+        <script>
+            function togglePassword(inputId) {
+                const input = document.getElementById(inputId);
+                const toggle = document.getElementById(inputId + "Toggle");
+                const icon = toggle.querySelector("i");
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            }
+        </script>
+    </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discover - Dating App</title>
+  <title>Matches - Dating App</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,116 +17,26 @@
       body {
         padding-bottom: 170px; /* Extra padding for mobile bottom nav */
       }
-      .action-buttons {
-        bottom: 90px; /* Adjust for bottom navigation */
-      }
     }
-    .profile-card {
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: pan-y;
-    }
-    .action-buttons {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 20px;
-      z-index: 1000;
-    }
-    .action-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    .match-card {
       transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .match-card:hover {
+      transform: translateY(-5px);
+    }
+    .match-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    @media (max-width: 767px) {
-      .action-buttons {
-        bottom: 100px; /* Account for bottom nav */
-        gap: 30px;
-      }
-      .action-btn {
-        width: 70px;
-        height: 70px;
-        font-size: 26px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      }
-    }
-    .action-btn:active {
-      transform: scale(0.9);
-    }
-    .pass-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-size: 32px;
       color: white;
-    }
-    .like-btn {
-      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-      color: white;
-    }
-    .swipe-feedback {
-      position: absolute;
-      pointer-events: none;
-      z-index: 1000;
-      font-size: 48px;
       font-weight: bold;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .swipe-feedback.active {
-      opacity: 1;
-      animation: pulse 0.5s ease-out;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.5); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.8; }
-    }
-    @keyframes slideOut {
-      to {
-        transform: translateX(var(--slide-x)) translateY(var(--slide-y)) rotate(var(--rotate)) scale(0.5);
-        opacity: 0;
-      }
-    }
-    .particle {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: currentColor;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: particleFloat 1s ease-out forwards;
-    }
-    @media (max-width: 767px) {
-      .container {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-      .profile-card .card {
-        max-width: 100% !important;
-        margin: 10px;
-      }
-      .profile-card .card-body {
-        padding: 20px !important;
-        min-height: 450px;
-      }
-    }
-    @keyframes particleFloat {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--tx), var(--ty)) scale(0);
-      }
+      margin: 0 auto;
     }
   </style>
 </head>
@@ -135,7 +45,7 @@
   <nav class="navbar navbar-dark fixed-bottom d-md-none" style="background: rgba(30, 30, 46, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #3a3a4e; height: 70px;">
     <div class="container-fluid d-flex justify-content-around align-items-center px-0">
       <a href="discover.html" class="nav-link text-center" style="color: #ff6b9d; flex: 1;">
-        <i class="fas fa-heart" style="font-size: 20px;"></i>
+        <i class="fas fa-search" style="font-size: 20px;"></i>
         <div style="font-size: 12px; margin-top: 2px;">Discover</div>
       </a>
       <a href="matches.html" class="nav-link text-center" style="color: #ff6b9d; flex: 1;">
@@ -153,7 +63,7 @@
   <nav class="navbar navbar-dark d-none d-md-flex" style="background: rgba(30, 30, 46, 0.8); backdrop-filter: blur(10px);">
     <div class="container-fluid">
       <span class="navbar-brand mb-0 h1 fw-bold" style="color: #ff6b9d;">
-        <i class="fas fa-heart"></i> Discover
+        <i class="fas fa-heart"></i> Matches
       </span>
       <div class="d-flex align-items-center gap-2">
         <a href="profile.html" class="d-flex align-items-center text-decoration-none" style="color: #ff6b9d; margin-right: 10px;">
@@ -161,8 +71,8 @@
           <div class="header-avatar-placeholder" style="width: 35px; height: 35px; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; border: 2px solid #ff6b9d;">U</div>
           <span class="header-username ms-2 d-none d-md-inline" style="font-weight: 500;">User</span>
         </a>
-        <a href="matches.html" class="btn btn-sm me-2" style="background: rgba(255, 107, 157, 0.2); border: 1px solid #ff6b9d; color: #ff6b9d;">
-          <i class="fas fa-users"></i> <span class="d-none d-lg-inline">Matches</span>
+        <a href="discover.html" class="btn btn-sm me-2" style="background: rgba(255, 107, 157, 0.2); border: 1px solid #ff6b9d; color: #ff6b9d;">
+          <i class="fas fa-search"></i> <span class="d-none d-lg-inline">Discover</span>
         </a>
         <a href="profile.html" class="btn btn-sm me-2" style="background: rgba(255, 107, 157, 0.2); border: 1px solid #ff6b9d; color: #ff6b9d;">
           <i class="fas fa-user-cog"></i>
@@ -174,22 +84,19 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <div id="profiles"></div>
-  </div>
-
-  <div class="action-buttons">
-    <button class="action-btn pass-btn" onclick="handlePass()" title="Pass">
-      <i class="fas fa-times"></i>
-    </button>
-    <button class="action-btn like-btn" onclick="handleLike()" title="Like">
-      <i class="fas fa-heart"></i>
-    </button>
+  <div class="container mt-4 pb-5">
+    <div id="matchesContainer">
+      <div class="text-center text-white p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/header.js"></script>
-  <script src="js/discover.js"></script>
+  <script src="js/matches.js"></script>
   <script>
     function logout() {
       localStorage.clear();

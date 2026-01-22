@@ -1,20 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Chat</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - Dating App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding-bottom: 100px;
+    }
+    @media (max-width: 767px) {
+      body {
+        padding-bottom: 170px; /* Extra padding for mobile bottom nav */
+      }
+    }
+    #chatBox {
+      min-height: calc(100vh - 250px);
+      max-height: calc(100vh - 250px);
+      overflow-y: auto;
+      padding: 15px;
+    }
+    .message {
+      margin-bottom: 15px;
+      animation: fadeIn 0.3s;
+      display: flex;
+      margin-bottom: 8px;
+    }
+    .message.sent {
+      justify-content: flex-end;
+    }
+    .message.received {
+      justify-content: flex-start;
+    }
+    .message-bubble {
+      display: inline-block;
+      max-width: 75%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      word-wrap: break-word;
+      font-size: 16px; /* Prevent zoom on iOS */
+      line-height: 1.4;
+      position: relative;
+    }
+    .message.sent .message-bubble {
+      background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .message.received .message-bubble {
+      background: #2a2a3e;
+      color: white;
+      border-bottom-left-radius: 4px;
+    }
+    .message-timestamp {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+      text-align: center;
+    }
+    .message.sent .message-timestamp {
+      text-align: right;
+    }
+    .message.received .message-timestamp {
+      text-align: left;
+    }
+    .message.optimistic {
+      opacity: 0.7;
+    }
+    .message.optimistic .message-bubble {
+      background: linear-gradient(135deg, #888888 0%, #666666 100%) !important;
+    }
+    @media (max-width: 767px) {
+      .message-bubble {
+        max-width: 85%;
+        padding: 10px 14px;
+        font-size: 16px;
+      }
+      #chatBox {
+        padding: 10px;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #chatBox::-webkit-scrollbar {
+      width: 6px;
+    }
+    #chatBox::-webkit-scrollbar-track {
+      background: #1e1e2e;
+    }
+    #chatBox::-webkit-scrollbar-thumb {
+      background: #ff6b9d;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 <body>
+  <!-- Mobile Bottom Navigation -->
+  <nav class="navbar navbar-dark fixed-bottom d-md-none" style="background: rgba(30, 30, 46, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #3a3a4e; height: 70px;">
+    <div class="container-fluid d-flex justify-content-around align-items-center px-0">
+      <a href="discover.html" class="nav-link text-center" style="color: #ff6b9d; flex: 1;">
+        <i class="fas fa-search" style="font-size: 20px;"></i>
+        <div style="font-size: 12px; margin-top: 2px;">Discover</div>
+      </a>
+      <a href="matches.html" class="nav-link text-center" style="color: #ff6b9d; flex: 1;">
+        <i class="fas fa-users" style="font-size: 20px;"></i>
+        <div style="font-size: 12px; margin-top: 2px;">Matches</div>
+      </a>
+      <a href="profile.html" class="nav-link text-center" style="color: #ff6b9d; flex: 1;">
+        <i class="fas fa-user" style="font-size: 20px;"></i>
+        <div style="font-size: 12px; margin-top: 2px;">Profile</div>
+      </a>
+    </div>
+  </nav>
 
-<h2>Chat</h2>
+  <!-- Desktop Header -->
+  <nav class="navbar navbar-dark d-none d-md-flex" style="background: rgba(30, 30, 46, 0.8); backdrop-filter: blur(10px);">
+    <div class="container-fluid">
+      <a href="matches.html" class="navbar-brand" style="color: #ff6b9d;">
+        <i class="fas fa-arrow-left me-2"></i>
+        <span id="chatUserName">Chat</span>
+      </a>
+      <div class="d-flex align-items-center gap-2">
+        <a href="profile.html" class="d-flex align-items-center text-decoration-none" style="color: #ff6b9d; margin-right: 10px;">
+          <img src="" alt="User" class="header-user-image" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #ff6b9d; display: none;">
+          <div class="header-avatar-placeholder" style="width: 35px; height: 35px; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; border: 2px solid #ff6b9d;">U</div>
+        </a>
+        <a href="discover.html" class="btn btn-sm me-2" style="background: rgba(255, 107, 157, 0.2); border: 1px solid #ff6b9d; color: #ff6b9d;">
+          <i class="fas fa-search"></i> <span class="d-none d-lg-inline">Discover</span>
+        </a>
+        <a href="matches.html" class="btn btn-sm" style="background: rgba(255, 107, 157, 0.2); border: 1px solid #ff6b9d; color: #ff6b9d;">
+          <i class="fas fa-users"></i> <span class="d-none d-lg-inline">Matches</span>
+        </a>
+      </div>
+    </div>
+  </nav>
 
-<p id="status"></p>
+  <div class="container mt-3">
+    <div id="status" class="alert alert-info text-center mb-3" style="background: rgba(255, 107, 157, 0.1); border: 1px solid #ff6b9d; color: #ff6b9d; border-radius: 10px;">
+      <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
 
-<div id="chatBox"></div>
+    <div id="chatBox" class="p-3"></div>
 
-<input id="msg" placeholder="Type message">
-<button onclick="sendMessage()">Send</button>
+    <div class="fixed-bottom p-3" style="background: rgba(30, 30, 46, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #3a3a4e;">
+      <div class="input-group">
+        <input
+          id="msg"
+          type="text"
+          class="form-control"
+          placeholder="Type a message..."
+          style="background: #2a2a3e; border: 1px solid #3a3a4e; color: white; border-radius: 25px 0 0 25px; padding: 12px 20px; font-size: 16px;"
+          onkeypress="handleKeyPress(event)"
+          autocomplete="off"
+        >
+        <button
+          onclick="sendMessage()"
+          id="sendBtn"
+          class="btn"
+          style="background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%); border: none; color: white; border-radius: 0 25px 25px 0; padding: 12px 20px; min-width: 50px; display: flex; align-items: center; justify-content: center;"
+        >
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
-<script src="js/chat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/chat.js"></script>
+  <script>
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+  </script>
 </body>
 </html>
